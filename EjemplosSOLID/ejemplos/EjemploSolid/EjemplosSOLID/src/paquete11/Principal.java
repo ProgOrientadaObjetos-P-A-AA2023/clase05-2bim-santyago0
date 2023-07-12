@@ -4,8 +4,12 @@
  */
 package paquete11;
 
+import java.util.Random;
+
 public class Principal {
     public static void main(String[] args) {
+        
+        // Grupo 7
         
         /*
         Usar el txt llamado usuarios.txt; por cada línea del archivo
@@ -16,7 +20,10 @@ public class Principal {
         Por cada objeto de tipo GeneradoPelicula presentar la información 
         a través de un toString
         */
+        Random random = new Random();
+        int numero = random.nextInt(12);
         
+        System.out.println(numero);
         
     }
 }
