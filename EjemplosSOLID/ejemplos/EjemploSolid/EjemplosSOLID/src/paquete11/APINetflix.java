@@ -5,6 +5,8 @@
  */
 package paquete11;
 
+import java.util.Random;
+
 
 public class APINetflix implements APIMovie{
     
@@ -12,7 +14,9 @@ public class APINetflix implements APIMovie{
     
     @Override
     public void establecerApiKey(String ak){
-        apiKey = ak+"NETFLIX123123";
+        Random r = new Random();
+        int random = r.nextInt(85922012);
+        apiKey = ak + random;
     }
     
     @Override

@@ -1,5 +1,7 @@
 package paquete11;
 
+import java.util.Random;
+
 /**
  *
  * @author santy
@@ -10,7 +12,9 @@ public class APIStarplus implements APIMovie{
     
     @Override
     public void establecerApiKey(String ak){
-        apiKey = ak+"STAR+5236662";
+        Random r = new Random();
+        int random = r.nextInt(15121644);
+        apiKey = ak + random;
     }
     
     @Override

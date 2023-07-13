@@ -4,8 +4,6 @@
  */
 package paquete11;
 
-import java.util.Random;
-
 public class Principal {
     public static void main(String[] args) {
         
@@ -20,10 +18,17 @@ public class Principal {
         Por cada objeto de tipo GeneradoPelicula presentar la información 
         a través de un toString
         */
-        Random random = new Random();
-        int numero = random.nextInt(12);
         
-        System.out.println(numero);
+        // Variable con el nombre del archivo
+        String nombreArchivo = "usuarios.txt";
         
+        /* Objeto de tipo LecturaArchivo, que recive como parámetro el nombre
+        del archivo */
+        LecturaArchivo lectura = new LecturaArchivo(nombreArchivo);
+        lectura.establecerLista();
+        // Se establece la lista con los datos del archivo
+        
+        System.out.println(lectura); // Se imprime el toString de LecturaArchivo
+        lectura.cerrarArchivo(); // Se cierra el archivo
     }
 }

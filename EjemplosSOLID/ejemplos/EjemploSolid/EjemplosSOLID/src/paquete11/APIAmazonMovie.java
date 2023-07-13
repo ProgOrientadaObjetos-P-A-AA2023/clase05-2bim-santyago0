@@ -5,6 +5,8 @@
  */
 package paquete11;
 
+import java.util.Random;
+
 
 public class APIAmazonMovie implements APIMovie{
     
@@ -12,7 +14,13 @@ public class APIAmazonMovie implements APIMovie{
     
     @Override
     public void establecerApiKey(String ak){
-        apiKey = ak+"AMAZON909090";
+        Random r = new Random();
+        /* Con la librería que elegimos para el random se debe crear un objeto
+        de tipo Random */
+        int random = r.nextInt(9021548);
+        /* A una variable entera le damos el valor random hasta él número en el
+        paréntesis, que sería el límite */
+        apiKey = ak + random;
     }
     
     @Override

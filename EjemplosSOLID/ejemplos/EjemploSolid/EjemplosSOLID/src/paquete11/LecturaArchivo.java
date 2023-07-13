@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package paquete11;
 
 import java.io.File;
@@ -14,14 +10,14 @@ import java.util.Scanner;
  *
  * @author santy
  */
-public class LecturaArchivo implements APIMovie {
+public class LecturaArchivo {
     
     private Scanner entrada;
     private String nombreArchivo;
     private String rutaArchivo;
-    private ArrayList<APIMovie> lista;
+    private ArrayList<GeneradorPelicula> lista;
 
-    public ArchivoLectura(String n) {
+    public LecturaArchivo(String n) {
         nombreArchivo = n;
         rutaArchivo = String.format("datos/%s", nombreArchivo);
         File f = new File(rutaArchivo);
@@ -42,7 +38,7 @@ public class LecturaArchivo implements APIMovie {
 
     public void establecerRutaArchivo() {
         rutaArchivo = String.format("datos/%s.txt",
-                obtenerNombreArchivo());;
+                obtenerNombreArchivo());
     }
 
     public String obtenerNombreArchivo() {
@@ -63,18 +59,81 @@ public class LecturaArchivo implements APIMovie {
                 String linea = entrada.nextLine();
 
                 ArrayList<String> linea_partes = new ArrayList<>(
-                        Arrays.asList(linea.split(";"))
-                );
-                APIMovie p = new APIMovie(linea_partes.get(0), // Tara Hernandez
-                        linea_partes.get(1) // contratado
-                );
-                lista.add(p);
+                        Arrays.asList(linea.split(";")));
+                
+                GeneradorPelicula p = new GeneradorPelicula();
+                
+                /* Se generan varios if para comparar que tipo de API se debe
+                generar, esto se lo hace mediante el indice 2 del ArrayList
+                "linea_partes", que divide las líneas del archivo en base al (;)
+                */
+                if(linea_partes.get(2).equals("Netflix")) {
+                    APINetflix api = new APINetflix();
+                    String apiKey = String.format("%s",
+                            linea_partes.get(2));
+                    /* Se crea un String con la cadena de la posición 2 del
+                    ArrayList, que en este caso sería el tipo de servicio; y 
+                    como el establecerApiKey recive un String que después lo 
+                    concatena con el número random, y así poder crear la ApiKey
+                    */
+                    api.establecerApiKey(apiKey);
+                    
+                    p.establecerLlave(api);
+                    String urlFinal = String.format("http://api.movie?api="
+                            + "%s/",linea_partes.get(1));
+                    /* En un String "urlFinal", se crea una dadena que contiene
+                    todo el URL, con el usuario, que se obtiene de la posición 1
+                    del ArrayList */
+                    p.establecerUrl(urlFinal);
+                    lista.add(p);
+                }
+                // Comparación para los demás servicios
+                if(linea_partes.get(2).equals("Disney")) {
+                    APIDisney api = new APIDisney();
+                    String apiKey = String.format("%s",
+                            linea_partes.get(2));
+                    api.establecerApiKey(apiKey);
+                    
+                    p.establecerLlave(api);
+                    String urlFinal = String.format("http://api.movie?api="
+                            + "%s/",linea_partes.get(1));
+                    p.establecerUrl(urlFinal);
+                    lista.add(p);
+                }
+                
+                // Comparación para los demás servicios
+                if(linea_partes.get(2).equals("Amazon")) {
+                    APIAmazonMovie api = new APIAmazonMovie();
+                    String apiKey = String.format("%s",
+                            linea_partes.get(2));
+                    api.establecerApiKey(apiKey);
+                    
+                    p.establecerLlave(api);
+                    String urlFinal = String.format("http://api.movie?api="
+                            + "%s/",linea_partes.get(1));
+                    p.establecerUrl(urlFinal);
+                    lista.add(p);
+                }
+                
+                // Comparación para los demás servicios
+                if(linea_partes.get(2).equals("Startplus")) {
+                    APIStarplus api = new APIStarplus();
+                    String apiKey = String.format("%s",
+                            linea_partes.get(2));
+                    api.establecerApiKey(apiKey);
+                    
+                    p.establecerLlave(api);
+                    String urlFinal = String.format("http://api.movie?api="
+                            + "%s/",linea_partes.get(1));
+                    p.establecerUrl(urlFinal);
+                    lista.add(p);
+                }
 
-            } // fin de while
+            }
         }
     }
 
-    public ArrayList<APIMovie> obtenerLista() {
+    public ArrayList<GeneradorPelicula> obtenerLista() {
 
         return lista;
     }
@@ -82,19 +141,20 @@ public class LecturaArchivo implements APIMovie {
     public void cerrarArchivo() {
         if (entrada != null) {
             entrada.close();
-        } // cierra el archivo
+        }
 
     }
 
     @Override
     public String toString() {
-        String cadena = "Lista APIMoviees\n";
+        String cadena = "Lista de URLs:\n";
+        
         for (int i = 0; i < obtenerLista().size(); i++) {
-            APIMovie profTemporal = obtenerLista().get(i); // Obj. APIMovie
-            cadena = String.format("%s(%d) %s %s\n", cadena,
+            GeneradorPelicula p = obtenerLista().get(i);
+            
+            cadena = String.format("%s(%d) %s\n", cadena,
                     i + 1,
-                    profTemporal.obtenerNombre(), // obtenerLista().get(i).obtenerNombre(),
-                    profTemporal.obtenerTipo());    // obtenerLista().get(i).obtenerTipo());
+                    p.obtenerUrl());
         }
         return cadena;
     }
