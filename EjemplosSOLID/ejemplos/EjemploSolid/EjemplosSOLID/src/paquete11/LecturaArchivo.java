@@ -63,72 +63,15 @@ public class LecturaArchivo {
                 
                 GeneradorPelicula p = new GeneradorPelicula();
                 
-                /* Se generan varios if para comparar que tipo de API se debe
-                generar, esto se lo hace mediante el indice 2 del ArrayList
-                "linea_partes", que divide las líneas del archivo en base al (;)
+                /* Se establece el usuario y el tipo de servicio con los métodos
+                establecer, y a través de la separación realizada por el ArrayList
+                "linea_partes", donde en la posición 1 está el usuario, y en la
+                2 el tipo de servicio
                 */
-                if(linea_partes.get(2).equals("Netflix")) {
-                    APINetflix api = new APINetflix();
-                    String apiKey = String.format("%s",
-                            linea_partes.get(2));
-                    /* Se crea un String con la cadena de la posición 2 del
-                    ArrayList, que en este caso sería el tipo de servicio; y 
-                    como el establecerApiKey recive un String que después lo 
-                    concatena con el número random, y así poder crear la ApiKey
-                    */
-                    api.establecerApiKey(apiKey);
-                    
-                    p.establecerLlave(api);
-                    String urlFinal = String.format("http://api.movie?api="
-                            + "%s/",linea_partes.get(1));
-                    /* En un String "urlFinal", se crea una dadena que contiene
-                    todo el URL, con el usuario, que se obtiene de la posición 1
-                    del ArrayList */
-                    p.establecerUrl(urlFinal);
-                    lista.add(p);
-                }
-                // Comparación para los demás servicios
-                if(linea_partes.get(2).equals("Disney")) {
-                    APIDisney api = new APIDisney();
-                    String apiKey = String.format("%s",
-                            linea_partes.get(2));
-                    api.establecerApiKey(apiKey);
-                    
-                    p.establecerLlave(api);
-                    String urlFinal = String.format("http://api.movie?api="
-                            + "%s/",linea_partes.get(1));
-                    p.establecerUrl(urlFinal);
-                    lista.add(p);
-                }
+                p.establecerUsername(linea_partes.get(1));
+                p.establecerServicio(linea_partes.get(2));
                 
-                // Comparación para los demás servicios
-                if(linea_partes.get(2).equals("Amazon")) {
-                    APIAmazonMovie api = new APIAmazonMovie();
-                    String apiKey = String.format("%s",
-                            linea_partes.get(2));
-                    api.establecerApiKey(apiKey);
-                    
-                    p.establecerLlave(api);
-                    String urlFinal = String.format("http://api.movie?api="
-                            + "%s/",linea_partes.get(1));
-                    p.establecerUrl(urlFinal);
-                    lista.add(p);
-                }
-                
-                // Comparación para los demás servicios
-                if(linea_partes.get(2).equals("Startplus")) {
-                    APIStarplus api = new APIStarplus();
-                    String apiKey = String.format("%s",
-                            linea_partes.get(2));
-                    api.establecerApiKey(apiKey);
-                    
-                    p.establecerLlave(api);
-                    String urlFinal = String.format("http://api.movie?api="
-                            + "%s/",linea_partes.get(1));
-                    p.establecerUrl(urlFinal);
-                    lista.add(p);
-                }
-
+                lista.add(p);
             }
         }
     }
@@ -143,20 +86,6 @@ public class LecturaArchivo {
             entrada.close();
         }
 
-    }
-
-    @Override
-    public String toString() {
-        String cadena = "Lista de URLs:\n";
-        
-        for (int i = 0; i < obtenerLista().size(); i++) {
-            GeneradorPelicula p = obtenerLista().get(i);
-            
-            cadena = String.format("%s(%d) %s\n", cadena,
-                    i + 1,
-                    p.obtenerUrl());
-        }
-        return cadena;
     }
     
 }
